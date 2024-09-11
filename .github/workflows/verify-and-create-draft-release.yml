@@ -10,6 +10,9 @@ on:
       ext_tag:
         description: 'Extension tag'
         required: true
+      release_tag:
+        description: 'Release tag'
+        required: true
 
 
 jobs:
@@ -70,7 +73,7 @@ jobs:
 
       - name: Release 
         run: |
-          export TAG=${{ github.event.inputs.engine_tag }}
+          export TAG=${{ github.event.inputs.release_tag }}
           export LOC=$(pwd)/
           bash ./.github/scripts/release.sh
         shell: bash
