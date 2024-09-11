@@ -73,7 +73,8 @@ jobs:
 
       - name: Release 
         run: |
-          export TAG=${{ github.event.inputs.release_tag }}
+          export TAG=${{ github.event.inputs.engine_tag }}
+          expoert RELEASE_VERSION=${{ github.event.inputs.release_tag }}
           export LOC=$(pwd)/
           bash ./.github/scripts/release.sh
         shell: bash
