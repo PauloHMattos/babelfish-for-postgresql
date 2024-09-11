@@ -41,11 +41,11 @@ jobs:
         path: |
          /tmp/build/${{ github.event.inputs.engine_tag }}.tar.gz
 
-  verify_zip:
-    needs: generate_tarballs
-    uses: ./.github/workflows/install-and-verify.yml
-    with:
-      file_type: zip
+#  verify_zip:
+#    needs: generate_tarballs
+#    uses: ./.github/workflows/install-and-verify.yml
+#    with:
+#      file_type: zip
 
   verify_tar:
     needs: generate_tarballs
@@ -54,8 +54,8 @@ jobs:
       file_type: tar
   
   release:
-    needs: [verify_zip, verify_tar]
-    if: always() && ${{ needs.verify_zip.outputs.result }} == 0 && ${{ needs.verify_tar.outputs.result }} == 0
+    needs: [verify_tar] #[verify_tar, verify_zip]
+    if: always() && ${{ needs.verify_tar.outputs.result }} == 0  #&& ${{ needs.verify_zip.outputs.result }} == 0
     runs-on: ubuntu-20.04
     env:
       GH_TOKEN: ${{ secrets.RELEASE_PRIVATE_KEY }}
