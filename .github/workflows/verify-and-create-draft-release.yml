@@ -28,13 +28,14 @@ jobs:
         export TAG=${{ github.event.inputs.engine_tag }}
         export EXTTAG=${{ github.event.inputs.ext_tag }}
         bash ./.github/scripts/build.sh
-
       shell: bash
-    - uses: actions/upload-artifact@v3
-      with:
-        name: zip
-        path: |
-          /tmp/build/${{ github.event.inputs.engine_tag }}.zip
+      
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: zip
+#        path: |
+#          /tmp/build/${{ github.event.inputs.engine_tag }}.zip
+
     - uses: actions/upload-artifact@v3
       with:
         name: tar
@@ -63,9 +64,9 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v3
 
-      - uses: actions/download-artifact@v3
-        with:
-          name: zip
+#      - uses: actions/download-artifact@v3
+#        with:
+#          name: zip
 
       - uses: actions/download-artifact@v3
         with:
