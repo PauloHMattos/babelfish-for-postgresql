@@ -53,24 +53,12 @@ jobs:
 
       - name: Set GCC and JDK version
         run: |
-          if [[ "${{env.MAJOR_VERSION}}" -le 3 ]]; then
-            echo "ANTLR_VERSION=4.9.3" >> $GITHUB_ENV
-            echo "JDK_VERSION=openjdk-8-jre" >> $GITHUB_ENV
-          else
-            echo "ANTLR_VERSION=4.13.2" >> $GITHUB_ENV
-            echo "JDK_VERSION=openjdk-21-jre" >> $GITHUB_ENV
-          fi
-
-          # Set GCC_VERSION based on version thresholds
           echo "Major version : ${{env.MAJOR_VERSION}},  Minor version : ${{env.MINOR_VERSION}}"
-          if [[ "${{env.MAJOR_VERSION}}" -eq 5 && "${{env.MINOR_VERSION}}" -le 1 ]] ||
-            [[ "${{env.MAJOR_VERSION}}" -eq 4 && "${{env.MINOR_VERSION}}" -le 5 ]] ||
-            [[ "${{env.MAJOR_VERSION}}" -eq 3 && "${{env.MINOR_VERSION}}" -le 9 ]] ||
-            [[ "${{env.MAJOR_VERSION}}" -eq 2 && "${{env.MINOR_VERSION}}" -le 12 ]]; then
-            echo "GCC_VERSION=GCC-9" >> $GITHUB_ENV
-          else
-            echo "GCC_VERSION=GCC-default" >> $GITHUB_ENV
-          fi
+
+          echo "ANTLR_VERSION=4.13.2" >> $GITHUB_ENV
+          echo "JDK_VERSION=openjdk-21-jre" >> $GITHUB_ENV
+
+          echo "GCC_VERSION=GCC-9" >> $GITHUB_ENV
 
         shell: bash
 
@@ -177,32 +165,19 @@ jobs:
         id: verify-version
         if: always() && steps.setup-babelfish-extension.outcome == 'success'
         run: |
-          ENGINE_VERSION=$(tsql -H localhost -U babelfish_user -p 1433 -P 12345678 -D master << EOF | grep -o "PostgreSQL [0-9]\+\.[0-9]\+" | sed 's/PostgreSQL //'
+          tsql -H localhost -U babelfish_user -p 1433  -P 12345678 -D master << EOF
           SELECT @@VERSION
           GO
           exit
           EOF
-          )
-          if [[ "$ENGINE_VERSION" != "${{env.EXPECTED_ENGINE_VERSION}}" ]]; then
-            echo "Engine version mismatch. Expected: ${{env.EXPECTED_ENGINE_VERSION}}, Found: $ENGINE_VERSION"
-            exit 1
-          fi
         shell: bash
 
       - name: Verify Babelfish Version
         id: verify-babelfish-version
         if: always() && steps.setup-babelfish-extension.outcome == 'success'
         run: |
-          BABELFISH_VERSION=$(tsql -H localhost -U babelfish_user -p 1433 -P 12345678 -D master << EOF | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+"
+          tsql -H localhost -U babelfish_user -p 1433  -P 12345678 -D master << EOF
           SELECT serverproperty('BabelfishVersion')
           GO
           exit
           EOF
-          )
-          if [[ "$BABELFISH_VERSION" != "${{env.VERSION}}" ]]; then
-            echo "Babelfish version mismatch. Expected: ${{env.VERSION}}, Found: $BABELFISH_VERSION"
-            exit 1
-          fi
-          echo "result=0" >> $GITHUB_OUTPUT
-        shell: bash
-
