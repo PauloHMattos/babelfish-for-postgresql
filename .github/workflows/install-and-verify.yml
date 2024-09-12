@@ -136,14 +136,14 @@ jobs:
           EOF
         shell: bash
       
-#      - name: Verify Babelfish Version
-#        id: verify-babelfish-version
-#        if: always() && steps.setup-babelfish-extension.outcome == 'success'
-#        run: |
-#          tsql -H localhost -U babelfish_user -p 1433  -P 12345678 -D master << EOF | grep ${{env.VERSION}} ; echo "result=$?" >> $GITHUB_OUTPUT
-#          SELECT serverproperty('BabelfishVersion')
-#          GO
-#          exit
-#          EOF
+      - name: Verify Babelfish Version
+        id: verify-babelfish-version
+        if: always() && steps.setup-babelfish-extension.outcome == 'success'
+        run: |
+          tsql -H localhost -U babelfish_user -p 1433  -P 12345678 -D master << EOF | grep ${{env.VERSION}} ; echo "result=$?" >> $GITHUB_OUTPUT
+          SELECT serverproperty('BabelfishVersion')
+          GO
+          exit
+          EOF
 #        shell: bash
 
