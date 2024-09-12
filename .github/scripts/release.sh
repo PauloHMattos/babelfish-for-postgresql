@@ -37,6 +37,9 @@ VERSION=$(echo $TAG | sed -r -e 's/BABEL_([0-9a-z_]*)__PG.*/\1/' -e 's/_/-/g')
 
 release=$title". The release notes are [here](https://babelfishpg.org/docs/versions/babelfish-${VERSION}.html)."
 
+
+NIGHTLY_VERSION=$RELEASE_VERSION-$(date '+%Y-%m-%d')
+
 echo "
 Releasing
 Tag: $RELEASE_VERSION
