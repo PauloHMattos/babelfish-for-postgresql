@@ -42,10 +42,10 @@ NIGHTLY_VERSION=$RELEASE_VERSION-$(date '+%Y-%m-%d')
 
 echo "
 Releasing
-Tag: $RELEASE_VERSION
+Tag: $NIGHTLY_VERSION
 Title: $title
 Attachments: ${LOC}${TAG}.*
 Release Notes: $release
 "
 
-gh release create --draft $RELEASE_VERSION ${LOC}${TAG}.* -d -t "$title" -n "$release"
+gh release create --draft $NIGHTLY_VERSION ${LOC}${TAG}.* -d -t "$title" -n "$release"
