@@ -36,7 +36,7 @@ jobs:
 #        path: |
 #          /tmp/build/${{ github.event.inputs.engine_tag }}.zip
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: tar
         path: |
