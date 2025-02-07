@@ -76,7 +76,7 @@ jobs:
         id: compile-parser-generator
         if: always() && steps.build-modified-postgres.outcome == 'success'
         run: |
-          ANTLR_VERSION=4.9.3
+          ANTLR_VERSION=4.13.2
           export cmake=$(which cmake)
           export ANTLR4_JAVA_BIN=/usr/bin/java
           export ANTLR_EXECUTABLE=/usr/local/lib/antlr-${ANTLR_VERSION}-complete.jar
